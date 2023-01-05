@@ -4,12 +4,12 @@ import {
   Get,
   Param,
   Post,
-  Put,
   Patch,
   Body,
-  Query,
 } from '@nestjs/common';
 import { clearConfigCache } from 'prettier';
+import { CreateMovieDTO } from './dto/create-movie.dto';
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
@@ -22,28 +22,24 @@ export class MoviesController {
     return this.moviesService.getAll();
   }
 
-  @Get('search')
-  search(@Query('year') year: string) {
-    return `We are searching for a movie with a year:  ${year}`;
-  }
-
   @Get(':id')
-  getOne(@Param('id') id: string): Movie {
+  getOne(@Param('id') id: number): Movie {
+    console.log(typeof id);
     return this.moviesService.getOne(id);
   }
 
   @Post()
-  create(@Body() movieData) {
+  create(@Body() movieData: CreateMovieDTO) {
     return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: number) {
     return this.moviesService.deleteOne(id);
   }
 
   @Patch('/:id')
-  patch(@Param('id') id: string, @Body() updateData) {
+  patch(@Param('id') id: number, @Body() updateData: UpdateMovieDTO) {
     return this.moviesService.update(id, updateData);
   }
 }
